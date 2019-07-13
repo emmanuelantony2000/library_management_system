@@ -25,7 +25,7 @@ impl Base for Row {
 }
 
 pub fn input(name: String, author: String, book_code: String) {
-    let mut database = load_hash_database("input_books.txt");
+    let mut database = load_hash_database("book.txt");
     let result = database.find(&format!("{} {} {}", name, author, book_code)[..]);
     if result.is_empty() {
         let row = Row {
@@ -74,11 +74,11 @@ pub fn input(name: String, author: String, book_code: String) {
         database.delete_record(index);
         database.add_record(row);
     }
-    database.save_database("input_books.txt");
+    database.save_database("book.txt");
 }
 
 pub fn add_book(book_code: String) {
-    let mut database = load_hash_database("input_books.txt");
+    let mut database = load_hash_database("book.txt");
     let result = database.find(&book_code.to_string()[..]);
     let index = match result[0].parse::<usize>() {
         Ok(x) => x,
@@ -117,11 +117,11 @@ pub fn add_book(book_code: String) {
     };
     database.delete_record(index);
     database.add_record(row);
-    database.save_database("input_books.txt");
+    database.save_database("book.txt");
 }
 
 pub fn remove_book(book_code: String) {
-    let mut database = load_hash_database("input_books.txt");
+    let mut database = load_hash_database("book.txt");
     let result = database.find(&book_code.to_string()[..]);
     let index = match result[0].parse::<usize>() {
         Ok(x) => x,
@@ -160,5 +160,5 @@ pub fn remove_book(book_code: String) {
     };
     database.delete_record(index);
     database.add_record(row);
-    database.save_database("input_books.txt");
+    database.save_database("book.txt");
 }

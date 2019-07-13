@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Input Books</title>
+		<title>Book Issue</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!--===============================================================================================-->
-		<link rel="icon" type="image/png" href="{{ url_for('static',    filename='images/icons/favicon.ico') }}"/>
+		<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='vendor/animate/animate.css') }}">
+		<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='vendor/animsition/css/animsition.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='vendor/select2/select2.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='vendor/daterangepicker/daterangepicker.css') }}">
+		<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 		<!--===============================================================================================-->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='css/util.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='css/main.css') }}">
+		<link rel="stylesheet" type="text/css" href="css/util.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<!--===============================================================================================-->
 	</head>
 	<body>
 		<div class="container-contact100">
 			<div class="wrap-contact100">
-				<form method="POST" class="contact100-form validate-form">
+				<form method="POST" class="contact100-form validate-form" action="/issue_form">
 					<span class="contact100-form-title">
-						Input Books
+						Book Issue
 					</span>
 					<div class="wrap-input100 validate-input" data-validate="Book name is required">
-						<span class="label-input100">Book Name</span>
-						<input class="input100" type="text" name="book_name" placeholder="Enter the book name">
+						<span class="label-input100">Your Name</span>
+						<input class="input100" type="text" name="name" placeholder="Enter your name">
 						<span class="focus-input100"></span>
 					</div>
-					<div class="wrap-input100 validate-input" data-validate="Author name is required">
-						<span class="label-input100">Author Name</span>
-						<input class="input100" type="text" name="author_name" placeholder="Enter the name of the author">
+					<div class="wrap-input100 validate-input" data-validate="Your class is required">
+						<span class="label-input100">Class</span>
+						<input class="input100" type="text" name="class" placeholder="Enter your class">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input" data-validate="Your ID is required">
+						<span class="label-input100">Your ID</span>
+						<input class="input100" type="text" name="id" placeholder="Enter your ID">
 						<span class="focus-input100"></span>
 					</div>
 					<div class="wrap-input100 validate-input" data-validate="Book code is required">
@@ -83,10 +88,10 @@
 		<!--===============================================================================================-->
 		<script src="vendor/select2/select2.min.js"></script>
 		<script>
-		$(".selection-2").select2({
-		minimumResultsForSearch: 20,
-		dropdownParent: $('#dropDownSelect1')
-		});
+			$(".selection-2").select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $('#dropDownSelect1')
+			});
 		</script>
 		<!--===============================================================================================-->
 		<script src="vendor/daterangepicker/moment.min.js"></script>

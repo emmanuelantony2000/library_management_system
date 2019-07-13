@@ -1,4 +1,4 @@
-use super::input_books;
+use super::book;
 use chrono::prelude::*;
 use simplebase::engine::*;
 use std::fmt;
@@ -46,12 +46,12 @@ where
 }
 
 pub fn issue(name: String, class: String, id: String, book_code: String) {
-    let mut database = load_hash_database("book_issue.txt");
-    let books = load_hash_database("input_books.txt");
+    let mut database = load_hash_database("issue.txt");
+    let books = load_hash_database("book.txt");
     let books = books.find(&book_code[..]);
     if books.is_empty() {
         println!("Book is not present in the system...");
-        println!("{:?}", load_hash_database("input_books.txt"));
+        println!("{:?}", load_hash_database("book.txt"));
         panic!();
     } else {
         let result = database.find(&format!("{} {} {} {}", name, class, id, book_code)[..]);
@@ -66,7 +66,7 @@ pub fn issue(name: String, class: String, id: String, book_code: String) {
                 date_returned: Option::None,
             };
             database.add_record(row);
-            input_books::remove_book(book_code);
+            book::remove_book(book_code);
         } else {
             let mut index = result
                 .iter()
@@ -107,7 +107,7 @@ pub fn issue(name: String, class: String, id: String, book_code: String) {
                 };
                 database.delete_record(index[index.len() - 1]);
                 database.add_record(row);
-                input_books::add_book(book_code);
+                book::add_book(book_code);
             } else {
                 let row = Row {
                     name,
@@ -119,9 +119,9 @@ pub fn issue(name: String, class: String, id: String, book_code: String) {
                     date_returned: Option::None,
                 };
                 database.add_record(row);
-                input_books::remove_book(book_code);
+                book::remove_book(book_code);
             }
         }
     }
-    database.save_database("book_issue.txt");
+    database.save_database("issue.txt");
 }

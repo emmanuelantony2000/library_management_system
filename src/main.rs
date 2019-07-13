@@ -4,91 +4,102 @@
 extern crate rocket;
 extern crate rocket_contrib;
 
-mod book_issue;
+mod book;
 mod first;
-mod input_books;
+mod issue;
 
 use rocket::request::Form;
+use rocket::response::Redirect;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use std::collections::HashMap;
 
-// use std::io::{self, Read};
-
-// use rocket::data::{FromData, Outcome, Transform, Transformed};
-// use rocket::http::Status;
-// use rocket::{Data, Outcome::*, Request};
-
-// const NAME_LIMIT: u64 = 256;
-
 #[derive(FromForm)]
-struct Button {
+struct Homepage {
     button: String,
 }
 
-// enum NameError {
-//     Io(io::Error),
-//     Parse,
-// }
+#[derive(FromForm)]
+struct Book {
+    name: String,
+    author: String,
+    book_code: String,
+    button: String,
+}
 
-// impl FromData<'_> for Button {
-//     type Error = NameError;
-//     type Owned = String;
-//     type Borrowed = str;
-
-//     fn transform(_: &Request, data: Data) -> Transform<Outcome<Self::Owned, Self::Error>> {
-//         let mut stream = data.open().take(NAME_LIMIT);
-//         let mut string = String::with_capacity((NAME_LIMIT / 2) as usize);
-//         let outcome = match stream.read_to_string(&mut string) {
-//             Ok(_) => Success(string),
-//             Err(e) => Failure((Status::InternalServerError, NameError::Io(e))),
-//         };
-
-//         // Returning `Borrowed` here means we get `Borrowed` in `from_data`.
-//         Transform::Borrowed(outcome)
-//     }
-
-//     fn from_data(_: &Request, outcome: Transformed<Self>) -> Outcome<Self, Self::Error> {
-//         // Retrieve a borrow to the now transformed `String` (an &str). This
-//         // is only correct because we know we _always_ return a `Borrowed` from
-//         // `transform` above.
-//         let s = outcome.borrowed()?;
-
-//         // Return successfully.
-//         Success(Button {
-//             value: s.to_string(),
-//         })
-//     }
-// }
+#[derive(FromForm)]
+struct Issue {
+    name: String,
+    class: String,
+    id: String,
+    book_code: String,
+    button: String,
+}
 
 #[get("/")]
 fn homepage() -> Template {
     Template::render("homepage", HashMap::<String, u32>::new())
 }
 
-#[post("/homepage_form", data = "<button>")]
-fn homepage_form(button: Form<Button>) -> String {
-    println!("{:?}", button.into_inner().button);
-    // Template::render("homepage", HashMap::<String, u32>::new())
-    String::from("Working...")
+#[post("/homepage_form", data = "<data>")]
+fn homepage_form(data: Form<Homepage>) -> Redirect {
+    match &data.button[..] {
+        "first" => Redirect::to("/book"),
+        "second" => Redirect::to("/issue"),
+        _ => panic!("Something is wrong in \"homepage_form\"..."),
+    }
+}
+
+#[get("/book")]
+fn book() -> Template {
+    Template::render("book", HashMap::<String, u32>::new())
+}
+
+#[post("/book_form", data = "<data>")]
+fn book_form(data: Form<Book>) -> Redirect {
+    match &data.button[..] {
+        "submit" => {
+            book::input(
+                data.name.clone(),
+                data.author.clone(),
+                data.book_code.clone(),
+            );
+            Redirect::to("/book")
+        }
+        "back" => Redirect::to("/"),
+        _ => panic!("Something is wrong in \"homepage_form\"..."),
+    }
+}
+
+#[get("/issue")]
+fn issue() -> Template {
+    Template::render("issue", HashMap::<String, u32>::new())
+}
+
+#[post("/issue_form", data = "<data>")]
+fn issue_form(data: Form<Issue>) -> Redirect {
+    match &data.button[..] {
+        "submit" => {
+            issue::issue(
+                data.name.clone(),
+                data.class.clone(),
+                data.id.clone(),
+                data.book_code.clone(),
+            );
+            Redirect::to("/issue")
+        }
+        "back" => Redirect::to("/"),
+        _ => panic!("Something is wrong in \"homepage_form\"..."),
+    }
 }
 
 fn main() {
-    println!("Hello, world!");
     first::init();
-    input_books::input(
-        "Hello".to_string(),
-        "Hello".to_string(),
-        "Hello".to_string(),
-    );
-    book_issue::issue(
-        "Hello".to_string(),
-        "Hello".to_string(),
-        "Hello".to_string(),
-        "Hello".to_string(),
-    );
     rocket::ignite()
-        .mount("/", routes![homepage, homepage_form])
+        .mount(
+            "/",
+            routes![homepage, homepage_form, book, book_form, issue, issue_form],
+        )
         .mount(
             "/",
             StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
