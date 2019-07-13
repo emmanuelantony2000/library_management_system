@@ -1,0 +1,16 @@
+[package]
+name = "library_management_system"
+version = "0.1.0"
+authors = ["Emmanuel Antony <emmanuelantony2000@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+simplebase = "*"
+rocket = "*"
+chrono = "*"
+time = "*"
+
+[dependencies.rocket_contrib]
+version = "*"
+default-features = false
+features = ["json", "handlebars_templates", "tera_templates", "serve"]
