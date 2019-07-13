@@ -36,11 +36,13 @@ struct Issue {
     button: String,
 }
 
+/// Renders the Homepage template.
 #[get("/")]
 fn homepage() -> Template {
     Template::render("homepage", HashMap::<String, u32>::new())
 }
 
+/// Handles the button input of the Homepage.
 #[post("/homepage_form", data = "<data>")]
 fn homepage_form(data: Form<Homepage>) -> Redirect {
     match &data.button[..] {
@@ -50,11 +52,13 @@ fn homepage_form(data: Form<Homepage>) -> Redirect {
     }
 }
 
+/// Renders the Input Books template.
 #[get("/book")]
 fn book() -> Template {
     Template::render("book", HashMap::<String, u32>::new())
 }
 
+/// Handles the form of the Input Books.
 #[post("/book_form", data = "<data>")]
 fn book_form(data: Form<Book>) -> Redirect {
     match &data.button[..] {
@@ -71,11 +75,13 @@ fn book_form(data: Form<Book>) -> Redirect {
     }
 }
 
+/// Renders the Book Issue template.
 #[get("/issue")]
 fn issue() -> Template {
     Template::render("issue", HashMap::<String, u32>::new())
 }
 
+/// Handles the form of Book Issue.
 #[post("/issue_form", data = "<data>")]
 fn issue_form(data: Form<Issue>) -> Redirect {
     match &data.button[..] {
