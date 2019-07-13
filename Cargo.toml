@@ -7,6 +7,7 @@ edition = "2018"
 [dependencies]
 simplebase = "*"
 rocket = "*"
+rocket_codegen = "*"
 chrono = "*"
 time = "*"
 
