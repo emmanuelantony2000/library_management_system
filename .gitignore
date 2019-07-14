@@ -1,2 +1,4 @@
 /target
 **/*.rs.bk
+/book.txt
+/issue.txt
