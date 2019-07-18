@@ -7,12 +7,12 @@ extern crate rocket_contrib;
 mod book;
 mod first;
 mod issue;
+mod templates;
 
 use rocket::request::Form;
+use rocket::response::content;
 use rocket::response::Redirect;
 use rocket_contrib::serve::StaticFiles;
-use rocket_contrib::templates::Template;
-use std::collections::HashMap;
 
 #[derive(FromForm)]
 struct Homepage {
@@ -38,8 +38,8 @@ struct Issue {
 
 /// Renders the Homepage template.
 #[get("/")]
-fn homepage() -> Template {
-    Template::render("homepage", HashMap::<String, u32>::new())
+fn homepage() -> content::Html<String> {
+    content::Html(templates::homepage())
 }
 
 /// Handles the button input of the Homepage.
@@ -54,8 +54,8 @@ fn homepage_form(data: Form<Homepage>) -> Redirect {
 
 /// Renders the Input Books template.
 #[get("/book")]
-fn book() -> Template {
-    Template::render("book", HashMap::<String, u32>::new())
+fn book() -> content::Html<String> {
+    content::Html(templates::book())
 }
 
 /// Handles the form of the Input Books.
@@ -77,8 +77,8 @@ fn book_form(data: Form<Book>) -> Redirect {
 
 /// Renders the Book Issue template.
 #[get("/issue")]
-fn issue() -> Template {
-    Template::render("issue", HashMap::<String, u32>::new())
+fn issue() -> content::Html<String> {
+    content::Html(templates::issue())
 }
 
 /// Handles the form of Book Issue.
@@ -110,6 +110,5 @@ fn main() {
             "/",
             StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
         )
-        .attach(Template::fairing())
         .launch();
 }

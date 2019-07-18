@@ -8,10 +8,6 @@ edition = "2018"
 simplebase = "*"
 rocket = "*"
 rocket_codegen = "*"
+rocket_contrib = "*"
 chrono = "*"
 time = "*"
-
-[dependencies.rocket_contrib]
-version = "*"
-default-features = false
-features = ["json", "handlebars_templates", "tera_templates", "serve"]
