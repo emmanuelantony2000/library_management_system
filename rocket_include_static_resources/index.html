@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `rocket_include_static_resources` crate."><meta name="keywords" content="rust, rustlang, rust-lang, rocket_include_static_resources"><title>rocket_include_static_resources - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../rocket_include_static_resources/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate rocket_include_static_resources</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all rocket_include_static_resources's items</p></a><div class="block items"><ul><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'rocket_include_static_resources', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/rocket_include_static_resources/lib.rs.html#1-206' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>rocket_include_static_resources</a></span></h1><div class='docblock'><h1 id="include-static-resources-for-rocket-framework" class="section-header"><a href="#include-static-resources-for-rocket-framework">Include Static Resources for Rocket Framework</a></h1>
+<p>This is a crate which provides macros <code>static_resources_initialize!</code> and <code>static_response!</code> to statically include files from your Rust project and make them be the HTTP response sources quickly.</p>
+<h2 id="example" class="section-header"><a href="#example">Example</a></h2>
+<div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">proc_macro_hygiene</span>, <span class="ident">decl_macro</span>)]</span>
+
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket</span>;
+
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket_include_static_resources</span>;
+
+<span class="kw">use</span> <span class="ident">rocket_include_static_resources</span>::<span class="ident">StaticResponse</span>;
+
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/favicon.ico&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">favicon</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StaticResponse</span> {
+    <span class="macro">static_response</span><span class="macro">!</span>(<span class="string">&quot;favicon&quot;</span>)
+}
+
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/favicon-16.png&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">favicon_png</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StaticResponse</span> {
+    <span class="macro">static_response</span><span class="macro">!</span>(<span class="string">&quot;favicon-png&quot;</span>)
+}
+
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">index</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StaticResponse</span> {
+    <span class="macro">static_response</span><span class="macro">!</span>(<span class="string">&quot;html-readme&quot;</span>)
+}
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="ident">rocket</span>::<span class="ident">ignite</span>()
+        .<span class="ident">attach</span>(<span class="ident">StaticResponse</span>::<span class="ident">fairing</span>(<span class="op">|</span><span class="ident">resources</span><span class="op">|</span> {
+            <span class="macro">static_resources_initialize</span><span class="macro">!</span>(
+                <span class="ident">resources</span>,
+
+                <span class="string">&quot;favicon&quot;</span>, <span class="string">&quot;examples/front-end/images/favicon.ico&quot;</span>,
+                <span class="string">&quot;favicon-png&quot;</span>, <span class="string">&quot;examples/front-end/images/favicon-16.png&quot;</span>,
+
+                <span class="string">&quot;html-readme&quot;</span>, <span class="string">&quot;examples/front-end/html/README.html&quot;</span>,
+            );
+        }))
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">favicon</span>, <span class="ident">favicon_png</span>])
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">index</span>])
+        .<span class="ident">launch</span>();
+}</pre></div>
+<ul>
+<li><code>static_resources_initialize!</code> is used for including files into your executable binary file. You need to specify each file's name and its path. For instance, the above example uses <strong>favicon</strong> to represent the file <strong>included-static-resources/favicon.ico</strong> and <strong>favicon_png</strong> to represent the file <strong>included-static-resources/favicon.png</strong>. A name cannot be repeating. In order to reduce the compilation time and allow to hot-reload resources, files are compiled into your executable binary file together, only when you are using the <strong>release</strong> profile.</li>
+<li><code>static_response!</code> is used for retrieving the file you input through the macro <code>static_resources_initialize!</code> as a Response instance into which three HTTP headers, <strong>Content-Type</strong>, <strong>Content-Length</strong> and <strong>Etag</strong>, will be automatically added.</li>
+</ul>
+<p>See <code>examples</code>.</p>
+</div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table><tr class='module-item'><td><a class="macro" href="macro.static_resources_initialize.html" title='rocket_include_static_resources::static_resources_initialize macro'>static_resources_initialize</a></td><td class='docblock-short'><p>Used in the fairing of <code>StaticResponse</code> to include static files into your executable binary file. You need to specify each file's name and its path. In order to reduce the compilation time and allow to hot-reload resources, files are compiled into your executable binary file together, only when you are using the <strong>release</strong> profile.</p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.static_response.html" title='rocket_include_static_resources::static_response macro'>static_response</a></td><td class='docblock-short'><p>Used for retrieving the file you input through the macro <code>static_resources_initialize!</code> as a Response instance into which three HTTP headers, <strong>Content-Type</strong>, <strong>Content-Length</strong> and <strong>Etag</strong>, will be automatically added.</p>
+</td></tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.FileResources.html" title='rocket_include_static_resources::FileResources struct'>FileResources</a></td><td class='docblock-short'><p>Reloadable file resources.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.StaticContextManager.html" title='rocket_include_static_resources::StaticContextManager struct'>StaticContextManager</a></td><td class='docblock-short'><p>To monitor the state of static resources.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.StaticResources.html" title='rocket_include_static_resources::StaticResources struct'>StaticResources</a></td><td class='docblock-short'><p>Static resources.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.StaticResponse.html" title='rocket_include_static_resources::StaticResponse struct'>StaticResponse</a></td><td class='docblock-short'><p>To respond a static resource.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../";window.currentCrate = "rocket_include_static_resources";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

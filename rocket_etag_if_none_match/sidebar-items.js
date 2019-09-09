@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EntityTag","An entity tag, defined in RFC7232"],["EtagIfNoneMatch","The request guard used for getting `if-none-match` header."]]});
